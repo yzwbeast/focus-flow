@@ -1,0 +1,4 @@
+replit
+matplotlib
+keyboard
+readchar
