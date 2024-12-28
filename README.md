@@ -4,6 +4,14 @@
 
 ## This project is an integrated version of the following three projects
 - **[entodo](https://github.com/yzwbeast/entodo)**：[based on a weekly plan with tasks for reading, writing, listening, speaking, and vocabulary. Log progress, view achievements, and visualize completion.](https://github.com/yzwbeast/entodo/blob/main/README.md)
+   - Key changes
+      1. Nested dictionaries: Design task tags as nested dictionaries to make multi-level selection possible.
+      2. Recursive menu: select_tag() function supports recursive selection of sub-tags.
+      3. Dynamically add tags: Users can add custom tags at any level.
+   - Example run
+      1. User selects `3. Tech`.
+      2. Then select `1. Web`.
+      3. Finally, `Web` is returned as the tag. 
 - **[pomodoro](https://github.com/yzwbeast/pomodoro)**：[It lets you set timers, add tags, and view daily statistics and charts. Supports English and Chinese, with data backup.](https://github.com/yzwbeast/pomodoro/blob/main/README.md)
 - **[read-log](https://github.com/yzwbeast/read-log)**：[A simple and efficient book tracking program to log and manage your reading records.](https://github.com/yzwbeast/read-log/blob/main/README.md)
 
