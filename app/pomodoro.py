@@ -23,7 +23,16 @@ BACKUP_FILE = "./json/pomodoro_data_backup.json"
 LANGUAGES = {
     "zh": {
         "menu": ["开始一个番茄时钟", "查看统计数据", "查看统计图表", "退出番茄时钟程序", "切换语言"],
-        "tags": ["英文", "书籍", "Python", "Web", "冥想", "其他"],
+        "tags": {
+            "英文": None,
+            "书籍": None,
+            "科技": {
+                "Python": None,
+                "Web": None
+            },
+            "冥想": None,
+            "其他": None
+        },
         "prompt": "请选择: ",
         "task_prompt": "请选择任务标签：",
         "enter_tag": "请输入新标签: ",
@@ -44,7 +53,16 @@ LANGUAGES = {
     },
     "en": {
         "menu": ["Start a Pomodoro Timer", "View Statistics", "View Statistics Chart", "Exit the Pomodoro program", "Switch language"],
-        "tags": ["English", "Books", "Python", "Web", "Meditation", "Others"],
+        "tags": {
+            "English": None,
+            "Books": None,
+            "Tech": {
+                "Python": None,
+                "Web": None
+            },
+            "Meditation": None,
+            "Others": None
+        },
         "prompt": "Choose: ",
         "task_prompt": "Select a task tag:",
         "enter_tag": "Enter new tag: ",
@@ -64,6 +82,32 @@ LANGUAGES = {
         "no_data": "No data available.",
     }
 }
+
+# 递归函数处理多级菜单选择
+def select_tag(tags):
+    while True:
+        print("\n" + LANGUAGES[current_language]["task_prompt"])
+        options = list(tags.keys())
+        for i, option in enumerate(options, start=1):
+            print(f"{i}. {option}")
+        print(f"{len(options) + 1}. {LANGUAGES[current_language]['enter_tag']}")
+        choice = input(">>> ")
+
+        try:
+            choice = int(choice)
+            if 1 <= choice <= len(options):
+                selected = options[choice - 1]
+                if tags[selected] is None:
+                    return selected
+                else:
+                    # 递归进入下一层级
+                    return select_tag(tags[selected])
+            elif choice == len(options) + 1:
+                return input(f"{LANGUAGES[current_language]['enter_tag']}: ").strip()
+            else:
+                print(LANGUAGES[current_language]["invalid_choice"])
+        except ValueError:
+            print(LANGUAGES[current_language]["invalid_choice"])
 
 # 设置默认语言
 current_language = "en"
@@ -186,26 +230,17 @@ def pomodoro_timer(minutes=25, tag="默认", language="zh"):
 # 主程序
 def main():
     global current_language
-    tags = LANGUAGES[current_language]["tags"]
 
     while True:
         menu = LANGUAGES[current_language]["menu"]
         print("\n" + "\n".join([f"{i+1}. {option}" for i, option in enumerate(menu)]))
         choice = input(LANGUAGES[current_language]["prompt"])
+
         if choice == "1":
-            try:
-                print(LANGUAGES[current_language]["task_prompt"])
-                for i, tag in enumerate(tags, start=1):
-                    print(f"{i}. {tag}")
-                tag_choice = int(input(">>> "))
-                if 1 <= tag_choice <= len(tags):
-                    tag = tags[tag_choice - 1]
-                else:
-                    tag = "Default" if current_language == "en" else "默认"
-                duration = int(input(LANGUAGES[current_language]["duration_prompt"]) or 25)
-                pomodoro_timer(duration, tag, current_language)
-            except ValueError:
-                print(LANGUAGES[current_language]["invalid_choice"])
+            # 选择任务标签
+            selected_tag = select_tag(LANGUAGES[current_language]["tags"])
+            duration = int(input(LANGUAGES[current_language]["duration_prompt"]) or 25)
+            pomodoro_timer(duration, selected_tag, current_language)
         elif choice == "2":
             show_statistics()
         elif choice == "3":
