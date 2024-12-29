@@ -26,7 +26,7 @@ LANGUAGES = {
         "tags": {
             "英文": None,
             "书籍": None,
-            "科技": {
+            "开发": {
                 "Python": None,
                 "Web": None
             },
@@ -56,7 +56,7 @@ LANGUAGES = {
         "tags": {
             "English": None,
             "Books": None,
-            "Tech": {
+            "Dev": {
                 "Python": None,
                 "Web": None
             },
